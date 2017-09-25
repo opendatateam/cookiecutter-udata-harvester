@@ -94,7 +94,7 @@ setup(
     install_requires=[],
     entry_points={
         'udata.harvester': [
-            '{{cookiecutter.identifier}} = {{cookiecutter.pypackage}}:harvesters:MyBackend',
+            '{{cookiecutter.identifier}} = {{cookiecutter.pypackage}}.harvesters:MyBackend',
         ]
     },
     license='{{ cookiecutter.license }}',
