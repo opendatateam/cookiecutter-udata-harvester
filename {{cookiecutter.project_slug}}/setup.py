@@ -93,7 +93,7 @@ setup(
     include_package_data=True,
     install_requires=[],
     entry_points={
-        'udata.harvester': [
+        'udata.harvesters': [
             '{{cookiecutter.identifier}} = {{cookiecutter.pypackage}}.harvesters:MyBackend',
         ]
     },
