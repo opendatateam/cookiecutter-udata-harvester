@@ -6,7 +6,7 @@ from udata.models import Resource
 from udata.utils import faker
 
 
-class MyBackend(BaseBackend):
+class {{ cookiecutter.identifier.title() }}Backend(BaseBackend):
     display_name = '{{ cookiecutter.project_name }}'
 
     def initialize(self):
