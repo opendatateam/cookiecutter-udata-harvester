@@ -1,12 +1,12 @@
 {
     "project_name": "My Harvester",
-    "project_slug": "{{ cookiecutter.project_name|replace(' ', '-')|lower }}",
+    "project_slug": "udata-{{ cookiecutter.project_name|replace(' ', '-')|lower }}",
     "pypackage": "{{ cookiecutter.project_slug|replace('-', '_') }}",
-    "identifier": "{{ cookiecutter.project_slug }}",
+    "identifier": "{{ cookiecutter.project_slug|replace('udata-', '') }}",
     "license": "AGPL",
     "author": "OpenDataTeam",
-    "email": "contact@my.team",
+    "email": "contact@opendata.team",
     "description": "My awesome uData harvester",
-    "version": "0.1.0",
-    "website": "https://harvester.opendata.team"
+    "version": "0.1.0.dev",
+    "website": "https://github.com/opendatateam/{{ cookiecutter.project_slug }}"
 }

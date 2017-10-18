@@ -6,6 +6,7 @@ import re
 
 from setuptools import setup
 
+RE_REQUIREMENT = re.compile(r'^\s*-r\s*(?P<filename>.*)$')
 RE_MD_CODE_BLOCK = re.compile(r'```(?P<language>\w+)?\n(?P<lines>.*?)```', re.S)
 RE_SELF_LINK = re.compile(r'\[(.*?)\]\[\]')
 RE_LINK_TO_URL = re.compile(r'\[(?P<text>.*?)\]\((?P<url>.*?)\)')
@@ -74,32 +75,54 @@ def md2pypi(filename):
     return content
 
 
+def pip(filename):
+    """Parse pip reqs file and transform it to setuptools requirements."""
+    requirements = []
+    for line in open(os.path.join('requirements', filename)):
+        line = line.strip()
+        if not line or '://' in line or line.startswith('#'):
+            continue
+        match = RE_REQUIREMENT.match(line)
+        if match:
+            requirements.extend(pip(match.group('filename')))
+        else:
+            requirements.append(line)
+    return requirements
+
+
 long_description = '\n'.join((
     md2pypi('README.md'),
     md2pypi('CHANGELOG.md'),
     ''
 ))
 
+install_requires = pip('install.pip')
+tests_require = pip('test.pip')
+
 
 setup(
     name='{{cookiecutter.project_slug}}',
-    version='{{cookiecutter.version}}',
-    description='{{cookiecutter.description}}',
+    version=__import__('{{cookiecutter.pypackage}}').__version__,
+    description=__import__('{{cookiecutter.pypackage}}').__description__,
     long_description=long_description,
     url='{{cookiecutter.website}}',
     author='{{cookiecutter.author}}',
     author_email='{{cookiecutter.email}}',
     packages=['{{cookiecutter.pypackage}}'],
     include_package_data=True,
-    install_requires=[],
+    install_requires=install_requires,
+    tests_require=tests_require,
+    extras_require={
+        'test': tests_require,
+    },
     entry_points={
         'udata.harvesters': [
-            '{{cookiecutter.identifier}} = {{cookiecutter.pypackage}}.harvesters:MyBackend',
+            '{{cookiecutter.identifier}} = {{cookiecutter.pypackage}}.harvesters:{{ cookiecutter.identifier.title() }}Backend',
         ]
     },
     license='{{ cookiecutter.license }}',
     zip_safe=False,
-    keywords='udata, theme, {{cookiecutter.project_name}}',
+    keywords='udata, harvester, {{cookiecutter.project_name}}',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Programming Language :: Python',
