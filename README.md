@@ -1,3 +1,5 @@
+**Note: This project is not maintained anymore. Harvesters are integrated in udata directly.**
+
 # cookiecutter-udata-harvester
 
 A cookiecutter template for a uData harvester
